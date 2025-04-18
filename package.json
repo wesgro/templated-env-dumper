@@ -28,12 +28,12 @@
   "dependencies": {
     "enquirer": "^2.3.6",
     "execa": "^9.5.2",
-    "hygen": "^6.2.11",
-    "typescript": "^5.8.3"
+    "hygen": "^6.2.11"
   },
   "devDependencies": {
     "@types/node": "^22",
     "rimraf": "^5.0.5",
-    "vitest": "^3"
+    "vitest": "^3",
+    "typescript": "^5.8.3"
   }
 }
