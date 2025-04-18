@@ -1,17 +1,32 @@
 {
   "name": "component-scraper",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI tool to create new packages in a monorepo structure",
   "main": "index.js",
+  "bin": {
+    "create-component-package": "./bin/create-component-package.js"
+  },
+  "files": [
+    "bin",
+    "_templates"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "create:package": "hygen package new"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "monorepo",
+    "generator",
+    "package",
+    "typescript"
+  ],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.8.1",
   "dependencies": {
+    "enquirer": "^2.3.6",
+    "execa": "^5.1.1",
     "hygen": "^6.2.11",
     "typescript": "^5.8.3"
   }
