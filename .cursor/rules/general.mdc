@@ -1,0 +1,14 @@
+---
+description: 
+globs: *.ts,*.js
+alwaysApply: false
+---
+
+# General rules
+
+- Always use `pnpm` when installing packages or doing anything that requires something you'd otherwise use `npm` for
+- When writing javascript files always use `// @ts-check` and jsdoc for type support
+- after making changes always follow up with running `pnpm test` and then doing concise changes until the test passes. 
+- Do not change tests to make the tests pass if you can avoid it
+    - Unless you are writing a new test entirely, in that case you can modify the source code.
+

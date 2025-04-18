@@ -36,16 +36,14 @@ describe('create-component-package', () => {
     await rimraf(TMP_DIR)
   })
 
-  it('should create a new package with the correct structure', async () => {
+  it('should create a new package with the correct structure and default npmrc values', async () => {
     const scriptPath = path.resolve(__dirname, '../bin/create-component-package.js')
 
     await execa({
-      input: TEST_PACKAGE_NAME + '\n', // Simulate user input
       encoding: 'utf8',
       cwd: TMP_DIR
-    })`node ${scriptPath}`
+    })`node ${scriptPath} --name ${TEST_PACKAGE_NAME}`
     
-
     // Verify the package directory was created
     const packageDirExists = await fs.stat(TEST_PACKAGE_DIR)
       .then(() => true)
@@ -72,14 +70,43 @@ describe('create-component-package', () => {
     expect(packageJson.name).toContain(TEST_PACKAGE_NAME)
     expect(packageJson.private).toBe(true)
 
+    // Verify .npmrc was created with default values
+    const npmrcContent = await fs.readFile(path.join(TEST_PACKAGE_DIR, '.npmrc'), 'utf-8')
+    expect(npmrcContent.trim()).toBe('@dbx-design:registry=https://npm.pkg.github.com')
+
     // Run npm test to verify the package.json is at least valid
     await execa({
       cwd: TEST_PACKAGE_DIR,
       preferLocal: true,
       shell: true
     })`npm run test`
-   
-    
+  }, 5000)
 
+  it('should create a new package with custom scope and registry in npmrc', async () => {
+    const scriptPath = path.resolve(__dirname, '../bin/create-component-package.js')
+    const customScope = 'my-scope'
+    const customRegistry = 'https://custom.registry.com'
+
+    await execa({
+      encoding: 'utf8',
+      cwd: TMP_DIR
+    })`node ${scriptPath} --name ${TEST_PACKAGE_NAME} --packageScope ${customScope} --packageRegistry ${customRegistry}`
+
+    // Verify the package directory was created
+    const packageDirExists = await fs.stat(TEST_PACKAGE_DIR)
+      .then(() => true)
+      .catch(() => false)
+    expect(packageDirExists).toBe(true)
+
+    // Verify .npmrc was created with custom values
+    const npmrcContent = await fs.readFile(path.join(TEST_PACKAGE_DIR, '.npmrc'), 'utf-8')
+    expect(npmrcContent.trim()).toBe(`@${customScope}:registry=${customRegistry}`)
+
+    // Run npm test to verify the package.json is at least valid
+    await execa({
+      cwd: TEST_PACKAGE_DIR,
+      preferLocal: true,
+      shell: true
+    })`npm run test`
   }, 5000)
 }) 

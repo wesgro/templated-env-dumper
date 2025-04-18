@@ -25,7 +25,9 @@ const defaultTemplates = path.join(__dirname, '..', '_templates')
 const createPrompter = () => {
   const enquirer = require('enquirer')
   return {
-    prompt: questions => enquirer.prompt(questions)
+    prompt: questions => {
+      return enquirer.prompt(questions)
+    }
   }
 }
 
@@ -40,7 +42,9 @@ const execAction = (action, body) => {
   return execa(action, { shell: true, ...opts })
 }
 
-runner(['package', 'new'], {
+// Get any additional flags passed to the script
+const args = process.argv.slice(2)
+runner(['package', 'new', ...args], {
   templates: defaultTemplates,
   cwd: process.cwd(),
   logger: new Logger(console.log.bind(console)),
