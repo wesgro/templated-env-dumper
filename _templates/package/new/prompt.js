@@ -1,5 +1,12 @@
+// @ts-check
+
 module.exports = {
-  prompt: ({ inquirer }) => {
+  /**
+   * @param {Object} params
+   * @param {import('enquirer')} params.prompter
+   * @returns {Promise<object>}
+   */
+  prompt: ({ prompter: enquirer }) => {
     const questions = [
       {
         type: 'input',
@@ -17,6 +24,6 @@ module.exports = {
         }
       }
     ];
-    return inquirer.prompt(questions);
+    return enquirer.prompt(questions);
   }
 }; 

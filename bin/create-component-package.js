@@ -9,7 +9,7 @@ const defaultTemplates = path.join(__dirname, '..', '_templates')
 
 /**
  * @typedef {import('enquirer')} Enquirer
- * @typedef {import('execa').ExecaReturnValue} ExecaReturnValue
+ * @typedef {ReturnType<typeof import('execa').execa>} ExecaResult
  */
 
 /**
@@ -32,10 +32,10 @@ const createPrompter = () => {
 /**
  * @param {string} action
  * @param {string | undefined} body
- * @returns {Promise<ExecaReturnValue>}
+ * @returns {ExecaResult}
  */
 const execAction = (action, body) => {
-  const execa = require('execa')
+  const { execa } = require('execa')
   const opts = body && body.length > 0 ? { input: body } : {}
   return execa(action, { shell: true, ...opts })
 }

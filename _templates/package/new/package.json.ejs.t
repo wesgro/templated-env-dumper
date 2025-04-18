@@ -2,18 +2,22 @@
 to: packages/<%= name %>/package.json
 ---
 {
-  "name": "@component-scraper/<%= name %>",
+  "name": "@dbx-design/<%= name %>",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "lint": "eslint src --ext .ts,.tsx"
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo 'test'"
   },
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^5.8.3"
+    "vite": "^6",
+    "@vitejs/plugin-react-swc": "^3",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "~5"
   }
 } 

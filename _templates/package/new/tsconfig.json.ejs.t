@@ -3,10 +3,10 @@ to: packages/<%= name %>/tsconfig.json
 ---
 {
   "compilerOptions": {
-    "target": "es2018",
-    "module": "commonjs",
-    "declaration": true,
-    "outDir": "./dist",
+    "target": "ESNext",
+    "module": "ESNext",
+    "isolatedModules": true,
+    "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
