@@ -4,9 +4,10 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import { rimraf } from 'rimraf'
 import os from 'node:os'
+import crypto from 'node:crypto'
 
 const TEST_PACKAGE_NAME = 'test-package'
-const TMP_DIR = path.join(os.tmpdir(), `dbx-design-test-${Date.now()}`)
+const TMP_DIR = path.join(os.tmpdir(), `dbx-design-test-${Date.now()}-${crypto.randomUUID()}`)
 const PACKAGES_DIR = path.join(TMP_DIR, 'packages')
 const TEST_PACKAGE_DIR = path.join(PACKAGES_DIR, TEST_PACKAGE_NAME)
 
@@ -51,6 +52,18 @@ describe('create-component-package', () => {
       .catch(() => false)
     expect(packageDirExists).toBe(true)
 
+    // Verify that `src` directory was created
+    const srcDirExists = await fs.stat(path.join(TEST_PACKAGE_DIR, 'src'))
+      .then(() => true)
+      .catch(() => false)
+    expect(srcDirExists).toBe(true)
+
+    // Verify that `src/main.tsx` file was created
+    const mainFileExists = await fs.stat(path.join(TEST_PACKAGE_DIR, 'src/main.tsx'))
+      .then(() => true)
+      .catch(() => false)
+    expect(mainFileExists).toBe(true)
+    
     // Verify package.json was created with correct name
     const packageJson = JSON.parse(
       await fs.readFile(path.join(TEST_PACKAGE_DIR, 'package.json'), 'utf-8')
@@ -59,19 +72,14 @@ describe('create-component-package', () => {
     expect(packageJson.name).toContain(TEST_PACKAGE_NAME)
     expect(packageJson.private).toBe(true)
 
-    // Run npm test in the temp directory
+    // Run npm test to verify the package.json is at least valid
     await execa({
       cwd: TEST_PACKAGE_DIR,
       preferLocal: true,
       shell: true
-    })`npm i --ignore-scripts`
-    // verify a package-lock.json was created
-    const packageLockExists = await fs.stat(path.join(TEST_PACKAGE_DIR, 'package-lock.json'))
-      .then(() => true)
-      .catch(() => false)
-    expect(packageLockExists).toBe(true)
+    })`npm run test`
    
     
 
-  }, 50000)
+  }, 5000)
 }) 

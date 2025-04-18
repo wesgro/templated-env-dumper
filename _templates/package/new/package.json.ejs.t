@@ -12,12 +12,19 @@ to: packages/<%= name %>/package.json
     "preview": "vite preview",
     "test": "echo 'test'"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
   "devDependencies": {
     "vite": "^6",
     "@vitejs/plugin-react-swc": "^3",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "~5"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
   }
 } 
