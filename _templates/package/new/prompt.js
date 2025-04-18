@@ -1,5 +1,20 @@
 // @ts-check
 
+
+const DEFAULT_VALUES = /** @type {const} */ {
+  packageScope: 'dbx-design',
+  packageRegistry: 'https://npm.pkg.github.com'
+};
+
+/**
+ * Get value from args or fallback to default
+ * @template {keyof typeof DEFAULT_VALUES} T
+ * @param {Record<string, string | undefined>} args
+ * @param {T} key
+ * @returns {string}
+ */
+const getValueOrDefault = (args, key) => args[key] || DEFAULT_VALUES[key];
+
 module.exports = {
   /**
    * @param {Object} params
@@ -12,8 +27,8 @@ module.exports = {
     if (args.name) {
       return Promise.resolve({
         name: args.name,
-        packageScope: args.packageScope || 'dbx-design',
-        packageRegistry: args.packageRegistry || 'https://npm.pkg.github.com'
+        packageScope: getValueOrDefault(args, 'packageScope'),
+        packageRegistry: getValueOrDefault(args, 'packageRegistry')
       });
     }
 
@@ -38,7 +53,7 @@ module.exports = {
         type: 'input',
         name: 'packageScope',
         message: 'What packageScope should be used for the package? (without @ symbol)',
-        initial: args.packageScope || 'dbx-design',
+        initial: getValueOrDefault(args, 'packageScope'),
         validate: (value) => {
           if (!/^[a-z0-9-]+$/.test(value)) {
             return 'packageScope can only contain lowercase letters, numbers, and hyphens';
@@ -50,7 +65,7 @@ module.exports = {
         type: 'input',
         name: 'packageRegistry',
         message: 'What is the package registry URL?',
-        initial: args.packageRegistry || 'https://npm.pkg.github.com',
+        initial: getValueOrDefault(args, 'packageRegistry'),
         validate: (value) => {
           try {
             new URL(value);
